@@ -1,10 +1,10 @@
 # 使用 OpenTelemetry Collector Builder 构建自定义 Collector组装你自己的 OpenTelemetry Collector 发行版
 
-LLMS index: [llms.txt]()⁠
+LLMS index: [llms.txt](/llms.txt)
 
 ------
 
-OpenTelemetry Collector 提供五种官方[发行版]()⁠，这些发行版已预先配置了特定组件。如果你需要更高的灵活性，可以使用 [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder)⁠（简称 `ocb`）来生成你自己的自定义 Collector 二进制发行版，其中可以包含自定义组件、上游组件以及其他公开可用的组件。
+OpenTelemetry Collector 提供五种官方[发行版](https://github.com/open-telemetry/opentelemetry-collector-releases)，这些发行版已预先配置了特定组件。如果你需要更高的灵活性，可以使用 [OpenTelemetry Collector Builder](https://github.com/open-telemetry/opentelemetry-collector/tree/main/cmd/builder)⁠（简称 `ocb`）来生成你自己的自定义 Collector 二进制发行版，其中可以包含自定义组件、上游组件以及其他公开可用的组件。
 
 以下指南将帮助你使用 `ocb` 开始构建自己的 Collector。在这个示例中，你将创建一个用于开发和测试自定义组件的 Collector 发行版。你可以直接在你喜欢的 Golang 集成开发环境（IDE）中启动并调试 Collector 组件。利用 IDE 的全部调试能力（例如堆栈跟踪——非常好的学习工具！）来理解 Collector 如何与你的组件代码交互。
 
@@ -152,7 +152,7 @@ providers:
 [!TIP]
 
 如果你想查看可用组件列表，请访问
- [OpenTelemetry Registry]()⁠。每个条目都包含你需要写入 `builder-config.yaml` 的完整名称和版本。
+ [OpenTelemetry Registry](https://opentelemetry.io/registry/)。每个条目都包含你需要写入 `builder-config.yaml` 的完整名称和版本。
 
 ## **生成代码并构建 Collector 发行版**
 
@@ -308,5 +308,5 @@ docker run -it --rm -p 4317:4317 -p 4318:4318 \
 
 ## **延伸阅读**
 
-- [构建 receiver]()⁠
+- [构建 receiver](./build_receiver.md)
 - [构建 connector]()⁠

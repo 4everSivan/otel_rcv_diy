@@ -3,8 +3,8 @@
 本文件记录 `otel_col_diy` 项目中 `patronireceiver` 的开发过程与设计决策。它是一个 **Scraper 型 Metrics Receiver**，用于定时拉取 [Patroni](https://github.com/patroni/patroni) 集群的 REST API，将节点 / 集群状态转换为 OpenTelemetry Metrics 并送入 Collector 管道。
 
 > 关联文档：
-> * 整体 Collector 架构与生命周期见 [collector_execution_flow.md](./collector_execution_flow.md)
-> * Receiver 设计模式与执行流程见 [receiver_execution_flow.md](./receiver_execution_flow.md)
+> * 整体 Collector 架构与生命周期见 [collector_execution_flow.md](../collector_execution_flow.md)
+> * Receiver 设计模式与执行流程见 [receiver_execution_flow.md](../receiver_execution_flow.md)
 > * 从零搭建一个 trace receiver 的入门教程见 [build_receiver.md](./build_receiver.md)（`tailtracer` 即由此而来）
 
 ---
@@ -398,7 +398,7 @@ service:
       exporters: [debug]
 ```
 
-> 只有在 `service.pipelines` 中被引用的 receiver 才会被实例化并 `Start()`（参见 [collector_execution_flow.md](./collector_execution_flow.md)）。这是 `tailtracer` 早期"不被加载"的根因，patronireceiver 接入时同样要注意。
+> 只有在 `service.pipelines` 中被引用的 receiver 才会被实例化并 `Start()`（参见 [collector_execution_flow.md](../collector_execution_flow.md)）。这是 `tailtracer` 早期"不被加载"的根因，patronireceiver 接入时同样要注意。
 
 ---
 
