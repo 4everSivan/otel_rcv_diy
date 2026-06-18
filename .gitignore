@@ -21,12 +21,23 @@ profile.cov
 # vendor/
 
 # Go workspace file
-go.work
-go.work.sum
+# go.work       # tracked — project uses go workspace
+# go.work.sum   # tracked
 
 # env file
 .env
 
-# Editor/IDE
-# .idea/
-# .vscode/
+# OpenTelemetry Collector Builder binary
+ocb
+otelcol-dev/otelcol-dev
+otelcol-dev/builder
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

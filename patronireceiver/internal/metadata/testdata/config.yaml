@@ -1,0 +1,268 @@
+default:
+all_set:
+  metrics:
+    patroni.cluster.unlocked:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.dcs_last_seen:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.failsafe_mode.active:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.history.lsn:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name","patroni.history.timeline","patroni.history.reason"]
+    patroni.history.promoted_at:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name","patroni.history.timeline","patroni.history.reason"]
+    patroni.history.size:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.is_paused:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.pending_restart:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.in_archive_recovery:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.running:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.role","patroni.scope"]
+    patroni.postgres.server_version:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.state:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.role","patroni.scope","patroni.state"]
+    patroni.postgres.streaming:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.timeline:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postmaster_start_time:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.primary:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.quorum_standby:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.replica:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.replication.lag:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.replication.receive_lag:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.replication.replay_lag:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.standby_leader:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.sync_standby:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.version:
+      enabled: true
+      attributes: ["patroni.node.name","patroni.scope","patroni.version"]
+    patroni.xlog.location:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.paused:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.received_location:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.replayed_location:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.replayed_timestamp:
+      enabled: true
+      attributes: ["patroni.scope","patroni.node.name"]
+reaggregate_set:
+  metrics:
+    patroni.cluster.unlocked:
+      enabled: true
+      attributes: []
+    patroni.dcs_last_seen:
+      enabled: true
+      attributes: []
+    patroni.failsafe_mode.active:
+      enabled: true
+      attributes: []
+    patroni.history.lsn:
+      enabled: true
+      attributes: []
+    patroni.history.promoted_at:
+      enabled: true
+      attributes: []
+    patroni.history.size:
+      enabled: true
+      attributes: []
+    patroni.is_paused:
+      enabled: true
+      attributes: []
+    patroni.pending_restart:
+      enabled: true
+      attributes: []
+    patroni.postgres.in_archive_recovery:
+      enabled: true
+      attributes: []
+    patroni.postgres.running:
+      enabled: true
+      attributes: []
+    patroni.postgres.server_version:
+      enabled: true
+      attributes: []
+    patroni.postgres.state:
+      enabled: true
+      attributes: []
+    patroni.postgres.streaming:
+      enabled: true
+      attributes: []
+    patroni.postgres.timeline:
+      enabled: true
+      attributes: []
+    patroni.postmaster_start_time:
+      enabled: true
+      attributes: []
+    patroni.primary:
+      enabled: true
+      attributes: []
+    patroni.quorum_standby:
+      enabled: true
+      attributes: []
+    patroni.replica:
+      enabled: true
+      attributes: []
+    patroni.replication.lag:
+      enabled: true
+      attributes: []
+    patroni.replication.receive_lag:
+      enabled: true
+      attributes: []
+    patroni.replication.replay_lag:
+      enabled: true
+      attributes: []
+    patroni.standby_leader:
+      enabled: true
+      attributes: []
+    patroni.sync_standby:
+      enabled: true
+      attributes: []
+    patroni.version:
+      enabled: true
+      attributes: []
+    patroni.xlog.location:
+      enabled: true
+      attributes: []
+    patroni.xlog.paused:
+      enabled: true
+      attributes: []
+    patroni.xlog.received_location:
+      enabled: true
+      attributes: []
+    patroni.xlog.replayed_location:
+      enabled: true
+      attributes: []
+    patroni.xlog.replayed_timestamp:
+      enabled: true
+      attributes: []
+none_set:
+  metrics:
+    patroni.cluster.unlocked:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.dcs_last_seen:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.failsafe_mode.active:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.history.lsn:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name","patroni.history.timeline","patroni.history.reason"]
+    patroni.history.promoted_at:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name","patroni.history.timeline","patroni.history.reason"]
+    patroni.history.size:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.is_paused:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.pending_restart:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.in_archive_recovery:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.running:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.role","patroni.scope"]
+    patroni.postgres.server_version:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.state:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.role","patroni.scope","patroni.state"]
+    patroni.postgres.streaming:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postgres.timeline:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.postmaster_start_time:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.primary:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.quorum_standby:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.replica:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.replication.lag:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.replication.receive_lag:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.replication.replay_lag:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.replication.application_name","patroni.replication.client_addr","patroni.replication.sync_state","patroni.scope"]
+    patroni.standby_leader:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.sync_standby:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.version:
+      enabled: false
+      attributes: ["patroni.node.name","patroni.scope","patroni.version"]
+    patroni.xlog.location:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.paused:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.received_location:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.replayed_location:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]
+    patroni.xlog.replayed_timestamp:
+      enabled: false
+      attributes: ["patroni.scope","patroni.node.name"]

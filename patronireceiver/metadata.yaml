@@ -1,0 +1,324 @@
+display_name: Patroni Receiver
+type: patronireceiver  # 组件名称
+
+description: |
+  This receiver queries the Patroni [status collector].
+
+
+status:
+  class: receiver  # 组件类型：receiver, exporter, processor, extension, connector, cmd
+  stability:
+    development: [metrics, traces, logs]  # 信号稳定性级别
+  codeowners:
+    active: [fbase_dba_group]
+
+# 1. 在顶层定义属性（相当于"声明"）
+#    数据源：GET /patroni、GET /cluster、GET /history 返回的 JSON 字段。
+attributes:
+  patroni.history.reason:
+    description: The reason recorded for the timeline switch (e.g. `no recovery target specified`).
+    type: string
+  patroni.history.timeline:
+    description: The PostgreSQL timeline number of a history entry (a promotion / timeline switch event).
+    type: int
+  patroni.node.name:
+    description: The name of the Patroni node (`patroni.name`).
+    type: string
+  patroni.replication.application_name:
+    description: The `application_name` of the replication standby as seen by the primary.
+    type: string
+  patroni.replication.client_addr:
+    description: The client IP address of the replication standby.
+    type: string
+  patroni.replication.sync_state:
+    description: The synchronous state of the standby, e.g. `async`, `sync`, `quorum`, `potential`.
+    type: string
+  patroni.role:
+    description: The role of the node, e.g. `primary`, `replica`, `standby_leader`.
+    type: string
+  patroni.scope:
+    description: The cluster scope (name) this Patroni node belongs to (`patroni.scope`).
+    type: string
+  patroni.state:
+    description: The textual PostgreSQL state of the node, e.g. `running`, `starting`.
+    type: string
+  patroni.version:
+    description: The Patroni version string (e.g. `4.0.0`).
+    type: string
+
+# 2. 在指标中引用已定义的属性（相当于"使用"）
+#    数据源与命名对照 Patroni 自身 GET /metrics 的 Prometheus 指标，
+#    便于与既有监控（Prometheus / Grafana）对齐：
+#      patroni.postgres.running              -> patroni_postgres_running
+#      patroni.xlog.location                 -> patroni_xlog_location
+#      patroni.postgres.state                -> patroni_postgres_state
+#      ...
+metrics:
+  patroni.cluster.unlocked:
+    enabled: true
+    description: Value is 1 if the cluster is unlocked (no leader lock held), 0 if locked.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.dcs_last_seen:
+    enabled: true
+    description: Epoch timestamp when DCS was last contacted successfully by Patroni.
+    unit: s
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.failsafe_mode.active:
+    enabled: true
+    description: Value is 1 if DCS failsafe mode is currently active, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.history.lsn:
+    enabled: true
+    description: WAL location (in bytes) at the moment the given timeline was promoted, from the cluster history entry. One data point per historical timeline.
+    unit: By
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name, patroni.history.timeline, patroni.history.reason]
+    stability: development
+
+  patroni.history.promoted_at:
+    enabled: true
+    description: Epoch timestamp (seconds) when the given timeline was created (promoted), parsed from the cluster history entry. One data point per historical timeline.
+    unit: s
+    gauge:
+      value_type: double
+    attributes: [patroni.scope, patroni.node.name, patroni.history.timeline, patroni.history.reason]
+    stability: development
+
+  patroni.history.size:
+    enabled: true
+    description: Total number of timeline switch (promotion) entries recorded in the cluster history.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.is_paused:
+    enabled: true
+    description: Value is 1 if auto failover is disabled (maintenance/pause mode), 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.pending_restart:
+    enabled: true
+    description: Value is 1 if the node needs a restart, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.postgres.in_archive_recovery:
+    enabled: true
+    description: Value is 1 if PostgreSQL is replicating from archive, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.postgres.running:
+    enabled: true
+    description: Value is 1 if PostgreSQL is running, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.role, patroni.scope]
+    stability: development
+
+  patroni.postgres.server_version:
+    enabled: true
+    description: PostgreSQL server version (if running), 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.postgres.state:
+    enabled: true
+    description: Numeric representation of the PostgreSQL state. 0=initdb, 1=initdb_failed, 2=custom_bootstrap, 3=custom_bootstrap_failed, 4=creating_replica, 5=running, 6=starting, 7=bootstrap_starting, 8=start_failed, 9=restarting, 10=restart_failed, 11=stopping, 12=stopped, 13=stop_failed, 14=crashed. Numeric values are fixed and never change for backward compatibility.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.role, patroni.scope, patroni.state]
+    stability: development
+
+  patroni.postgres.streaming:
+    enabled: true
+    description: Value is 1 if PostgreSQL is streaming, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.postgres.timeline:
+    enabled: true
+    description: PostgreSQL timeline of this node (if running), 0 otherwise.
+    unit: "1"
+    sum:
+      value_type: int
+      monotonic: true
+      aggregation_temporality: cumulative
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.postmaster_start_time:
+    enabled: true
+    description: Epoch seconds since the PostgreSQL postmaster started.
+    unit: s
+    gauge:
+      value_type: double
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.primary:
+    enabled: true
+    description: Value is 1 if this node is the leader (primary), 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.quorum_standby:
+    enabled: true
+    description: Value is 1 if this node is a quorum standby replica, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.replica:
+    enabled: true
+    description: Value is 1 if this node is a replica, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.replication.lag:
+    enabled: true
+    description: Total replication lag in bytes between the standby and the leader.
+    unit: By
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.replication.application_name, patroni.replication.client_addr, patroni.replication.sync_state, patroni.scope]
+    stability: development
+
+  patroni.replication.receive_lag:
+    enabled: true
+    description: Receive lag in bytes between the leader and the standby.
+    unit: By
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.replication.application_name, patroni.replication.client_addr, patroni.replication.sync_state, patroni.scope]
+    stability: development
+
+  patroni.replication.replay_lag:
+    enabled: true
+    description: Replay lag in bytes between received and replayed WAL on the standby.
+    unit: By
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.replication.application_name, patroni.replication.client_addr, patroni.replication.sync_state, patroni.scope]
+    stability: development
+
+  patroni.standby_leader:
+    enabled: true
+    description: Value is 1 if this node is the standby_leader, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.sync_standby:
+    enabled: true
+    description: Value is 1 if this node is a synchronous standby replica, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.version:
+    enabled: true
+    description: Patroni semver rendered without periods (e.g. `040000` for `4.0.0`).
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.node.name, patroni.scope, patroni.version]
+    stability: development
+
+  patroni.xlog.location:
+    enabled: true
+    description: Current location of the PostgreSQL transaction log (WAL), 0 if this node is not the leader.
+    unit: By
+    sum:
+      value_type: int
+      monotonic: true
+      aggregation_temporality: cumulative
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.xlog.paused:
+    enabled: true
+    description: Value is 1 if the PostgreSQL xlog is paused, 0 otherwise.
+    unit: "1"
+    gauge:
+      value_type: int
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.xlog.received_location:
+    enabled: true
+    description: Current location of the received PostgreSQL transaction log, 0 if this node is not a replica.
+    unit: By
+    sum:
+      value_type: int
+      monotonic: true
+      aggregation_temporality: cumulative
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.xlog.replayed_location:
+    enabled: true
+    description: Current location of the replayed PostgreSQL transaction log, 0 if this node is not a replica.
+    unit: By
+    sum:
+      value_type: int
+      monotonic: true
+      aggregation_temporality: cumulative
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development
+
+  patroni.xlog.replayed_timestamp:
+    enabled: true
+    description: Epoch timestamp of the replayed PostgreSQL transaction log, 0 if null.
+    unit: s
+    gauge:
+      value_type: double
+    attributes: [patroni.scope, patroni.node.name]
+    stability: development

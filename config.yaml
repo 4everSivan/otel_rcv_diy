@@ -1,0 +1,27 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  tailtracer: # this line represents the ID of your receiver
+    interval: 1m
+    number_of_traces: 1
+
+exporters:
+  debug:
+    verbosity: detailed
+  otlp/jaeger:
+    endpoint: localhost:14317
+    tls:
+      insecure: true
+    sending_queue:
+      batch:
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp, tailtracer]
+      exporters: [otlp/jaeger, debug]
+  telemetry:
+    logs:
+      level: debug
